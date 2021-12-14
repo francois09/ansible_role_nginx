@@ -1,0 +1,40 @@
+---
+- name: Nginx install packages
+  apt:
+    name: "{{ nginx__default_packages }}"
+    update_cache: yes
+    state: present
+  when: nginx__install
+
+- name: Create ngnix vhost file
+  template:
+    src: vhost.conf
+    dest: "/etc/nginx/sites-available/{{ item.hostname }}"
+  notify: Reload nginx
+  with_items: "{{ nginx__conf.vhost }}"
+  when:
+    - nginx__install
+    - nginx__configure
+
+- name: Create ngnix content directory
+  file:
+    dest: "/var/www/{{ item.hostname }}"
+    state: directory
+    mode: 0755
+  with_items: "{{ nginx__conf.vhost }}"
+  when:
+    - nginx__install
+    - nginx__configure
+
+- name: Create nginx link service file
+  file:
+    path: "/etc/nginx/sites-enabled/{{ item.hostname }}.conf"
+    src: "/etc/nginx/sites-available/{{ item.hostname }}"
+    state: link
+  notify: Reload nginx
+  with_items: "{{ nginx__conf.vhost }}"
+  when:
+    - nginx__install
+    - nginx__configure
+
+

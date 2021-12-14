@@ -1,0 +1,8 @@
+---
+# Default do nothing
+nginx__install: False
+nginx__configure: False
+
+# defaults file for nginx
+nginx__default_packages:
+  - nginx
