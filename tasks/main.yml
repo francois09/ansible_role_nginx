@@ -26,6 +26,13 @@
     - nginx__install
     - nginx__configure
 
+- include_tasks: populate_content.yml
+  loop: "{{ nginx__conf.vhost }}"
+  when:
+    - nginx__install
+    - nginx__configure
+    - item.files is defined
+
 - name: Create nginx link service file
   file:
     path: "/etc/nginx/sites-enabled/{{ item.hostname }}.conf"

@@ -1,0 +1,6 @@
+---
+- name: Create {{ item_file }} file
+  copy:
+    dest: "/var/www/{{ item.hostname }}/{{ item_file.name }}"
+    content: "{{ item_file.content }}"
+...
