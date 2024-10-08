@@ -1,0 +1,6 @@
+---
+- include_tasks: create_file.yml
+  loop: "{{ item.files }}"
+  loop_control:
+    loop_var: item_file
+...
