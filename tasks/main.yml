@@ -38,6 +38,7 @@
     path: "/etc/nginx/sites-enabled/{{ item.hostname }}.conf"
     src: "/etc/nginx/sites-available/{{ item.hostname }}"
     state: link
+    force: yes
   notify: Reload nginx
   with_items: "{{ nginx__conf.vhost }}"
   when:
